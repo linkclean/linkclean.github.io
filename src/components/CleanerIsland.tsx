@@ -19,6 +19,8 @@ interface CleanResult {
   changesMade: boolean;
 }
 
+const AUTO_COPY_KEY = 'linkclean_autocopy';
+
 export default function CleanerIsland({ compact = false }: CleanerIslandProps) {
   const [ruleset, setRuleset] = useState<Ruleset | null>(null);
   const [loading, setLoading] = useState(true);
@@ -26,16 +28,27 @@ export default function CleanerIsland({ compact = false }: CleanerIslandProps) {
   const [result, setResult] = useState<CleanResult | null>(null);
   const [copied, setCopied] = useState(false);
   const [shortLinkDetected, setShortLinkDetected] = useState(false);
+  const [autoCopy, setAutoCopy] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     fetchRuleset()
       .then(({ ruleset: r }) => setRuleset(r))
       .finally(() => setLoading(false));
+    try {
+      setAutoCopy(localStorage.getItem(AUTO_COPY_KEY) === '1');
+    } catch { /* localStorage unavailable */ }
   }, []);
 
+  const copyToClipboard = (text: string) => {
+    void navigator.clipboard.writeText(text).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    });
+  };
+
   const clean = useCallback(
-    async (text: string) => {
+    async (text: string, shouldAutoCopy: boolean) => {
       if (!ruleset || !text.trim()) {
         setResult(null);
         setShortLinkDetected(false);
@@ -47,22 +60,30 @@ export default function CleanerIsland({ compact = false }: CleanerIslandProps) {
 
       const r = await LinkCleanPipeline.process(text, ruleset);
       setResult(r);
+      if (shouldAutoCopy && r.changesMade) copyToClipboard(r.cleanedText);
     },
     [ruleset],
   );
 
+  const autoCopyRef = useRef(autoCopy);
+  autoCopyRef.current = autoCopy;
+
   const handleInput = (value: string) => {
     setInput(value);
     if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => void clean(value), 120);
+    debounceRef.current = setTimeout(() => void clean(value, autoCopyRef.current), 120);
   };
 
   const handleCopy = () => {
     if (!result?.cleanedText) return;
-    void navigator.clipboard.writeText(result.cleanedText).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1800);
-    });
+    copyToClipboard(result.cleanedText);
+  };
+
+  const handleAutoCopyChange = (checked: boolean) => {
+    setAutoCopy(checked);
+    try {
+      localStorage.setItem(AUTO_COPY_KEY, checked ? '1' : '0');
+    } catch { /* non-fatal */ }
   };
 
   const handleClear = () => {
@@ -147,6 +168,15 @@ export default function CleanerIsland({ compact = false }: CleanerIslandProps) {
               Clear
             </button>
           )}
+          <label className="cleaner-autocopy-label">
+            <input
+              type="checkbox"
+              checked={autoCopy}
+              onChange={(e) => handleAutoCopyChange(e.target.checked)}
+              className="cleaner-autocopy-check"
+            />
+            Auto-copy
+          </label>
         </div>
       </div>
 
