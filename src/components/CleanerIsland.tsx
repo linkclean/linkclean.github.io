@@ -1,7 +1,11 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { fetchRuleset } from '../lib/WebRulesetFetcher';
 import { LinkCleanPipeline } from '../core/pipeline/index';
+import { isShortLink } from '../core/utils/ShortLinkResolver';
+import shortlinkData from '../core/shortlinks/shortlinks.json';
 import type { Ruleset } from '../core/rules/RulesetSchema';
+
+const SHORT_DOMAINS: string[] = shortlinkData.domains;
 
 interface CleanerIslandProps {
   /** Compact mode for the homepage demo strip. Full UI when false. */
@@ -21,6 +25,7 @@ export default function CleanerIsland({ compact = false }: CleanerIslandProps) {
   const [input, setInput] = useState('');
   const [result, setResult] = useState<CleanResult | null>(null);
   const [copied, setCopied] = useState(false);
+  const [shortLinkDetected, setShortLinkDetected] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -33,8 +38,13 @@ export default function CleanerIsland({ compact = false }: CleanerIslandProps) {
     async (text: string) => {
       if (!ruleset || !text.trim()) {
         setResult(null);
+        setShortLinkDetected(false);
         return;
       }
+      // Detect short links — browser can't resolve them (CORS), surface guidance instead
+      const urlMatches = text.match(/https?:\/\/[^\s"'>]+/gi) ?? [];
+      setShortLinkDetected(urlMatches.some((u) => isShortLink(u, SHORT_DOMAINS)));
+
       const r = await LinkCleanPipeline.process(text, ruleset);
       setResult(r);
     },
@@ -87,6 +97,12 @@ export default function CleanerIsland({ compact = false }: CleanerIslandProps) {
             <div className="cleaner-output cleaner-output--compact">
               {result.cleanedText}
             </div>
+            {shortLinkDetected && (
+              <div className="cleaner-shortlink-notice">
+                Short link detected — browsers can't follow redirects due to CORS.
+                Use the <strong>Link Clean app</strong> to resolve and clean it.
+              </div>
+            )}
             <div className="cleaner-footer">
               <span className="cleaner-stat">
                 {result.urlsCleaned > 0
@@ -167,6 +183,12 @@ export default function CleanerIsland({ compact = false }: CleanerIslandProps) {
                 : ''
               : 'Cleaned output will appear here.'}
         </div>
+        {shortLinkDetected && (
+          <div className="cleaner-shortlink-notice">
+            Short link detected — browsers can't follow redirects due to CORS.
+            Use the <strong>Link Clean app</strong> to resolve and clean it on-device.
+          </div>
+        )}
         <div className="cleaner-panel-footer">
           {result?.changesMade && (
             <button className="cleaner-btn" onClick={handleCopy}>

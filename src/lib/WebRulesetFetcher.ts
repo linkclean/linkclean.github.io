@@ -1,7 +1,7 @@
 import { RulesetSchema, type Ruleset } from '../core/rules/RulesetSchema';
 
 const RULES_URL =
-  'https://raw.githubusercontent.com/linkclean/linkclean-rules/main/rules.min.json';
+  'https://raw.githubusercontent.com/linkclean/linkclean-rules/master/rules.min.json';
 
 const CACHE_KEY = 'linkclean_rules_v1';
 const CACHE_TS_KEY = 'linkclean_rules_ts_v1';
