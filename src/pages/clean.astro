@@ -1,0 +1,118 @@
+---
+import Base from '../layouts/Base.astro';
+import CleanerIsland from '../components/CleanerIsland';
+---
+
+<Base
+  title="Link Cleaner — Link Clean"
+  description="Paste any URL or text containing URLs. Tracking parameters are stripped instantly, entirely in your browser."
+>
+  <main>
+    <section class="clean-hero">
+      <div class="container">
+        <div class="section-label">Link Cleaner</div>
+        <h1 class="clean-title">Strip tracking parameters.</h1>
+        <p class="clean-sub">
+          Paste any URL or text below. Tracking parameters are removed instantly,
+          entirely in your browser &mdash; nothing is sent to a server.
+        </p>
+      </div>
+    </section>
+
+    <section class="clean-main">
+      <div class="container">
+        <CleanerIsland compact={false} client:load />
+
+        <div class="clean-what">
+          <div class="clean-what-title">What gets removed</div>
+          <div class="clean-tags">
+            <span class="clean-tag">utm_source</span>
+            <span class="clean-tag">utm_medium</span>
+            <span class="clean-tag">utm_campaign</span>
+            <span class="clean-tag">utm_content</span>
+            <span class="clean-tag">utm_term</span>
+            <span class="clean-tag">fbclid</span>
+            <span class="clean-tag">gclid</span>
+            <span class="clean-tag">msclkid</span>
+            <span class="clean-tag">dclid</span>
+            <span class="clean-tag">_ga</span>
+            <span class="clean-tag">_gl</span>
+            <span class="clean-tag">ref</span>
+            <span class="clean-tag">tag</span>
+            <span class="clean-tag clean-tag--muted">+ 250 domain-specific rules</span>
+          </div>
+        </div>
+
+        <div class="clean-note">
+          <svg width="14" height="14" fill="none" viewBox="0 0 16 16" style="flex-shrink:0;margin-top:2px">
+            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M8 7v4M8 5.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          Rules are fetched from the
+          <a href="https://github.com/linkclean/linkclean-rules">community ruleset</a>
+          and cached in your browser for 24 hours. No URLs or data leave your device.
+          For on-the-go cleaning, install the
+          <a href="https://github.com/linkclean">mobile app</a>
+          which works from your share sheet.
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .clean-hero {
+    padding: 56px 0 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  .clean-title {
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+  }
+  .clean-sub {
+    color: var(--muted);
+    font-size: 16px;
+    max-width: 520px;
+    line-height: 1.7;
+  }
+  .clean-main { padding: 40px 0 80px; }
+  .clean-what {
+    margin-top: 32px;
+  }
+  .clean-what-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .clean-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .clean-tag {
+    font-family: "SF Mono", "Fira Code", Menlo, monospace;
+    font-size: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px 10px;
+    color: var(--blue-light);
+  }
+  .clean-tag--muted { color: var(--muted); font-family: inherit; }
+  .clean-note {
+    margin-top: 24px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .clean-note a { color: var(--muted); text-decoration: underline; }
+  .clean-note a:hover { color: var(--text); }
+</style>

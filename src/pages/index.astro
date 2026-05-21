@@ -1,0 +1,163 @@
+---
+import Base from '../layouts/Base.astro';
+import CleanerIsland from '../components/CleanerIsland';
+---
+
+<Base
+  title="Link Clean — Strip tracking parameters. Privately."
+  description="Link Clean removes UTM codes, referral IDs, affiliate tokens, and tracking fragments from URLs — entirely on-device. No data ever leaves your phone."
+>
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-badge">100% On-Device</div>
+        <h1>Strip tracking parameters.<br/><span class="accent">Keep your privacy.</span></h1>
+        <p class="hero-sub">
+          Link Clean removes UTM codes, referral IDs, affiliate tokens, and tracking fragments
+          from any URL &mdash; instantly, entirely on your device. No analytics. No cloud. No tracking the tracker-remover.
+        </p>
+        <div class="hero-actions">
+          <a href="https://github.com/linkclean" class="btn btn-primary">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>
+            View on GitHub
+          </a>
+          <a href="#features" class="btn btn-ghost">Learn more</a>
+        </div>
+
+        <div class="demo">
+          <div class="demo-label">Try it — paste any URL</div>
+          <CleanerIsland compact={true} client:load />
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="container">
+        <div class="section-label">Features</div>
+        <h2>Clean links everywhere you share them.</h2>
+        <p class="section-sub">
+          250+ domain-specific rules plus universal tracking parameter removal &mdash; all running locally on your device.
+        </p>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <span class="feature-icon">📤</span>
+            <div class="feature-title">iOS Share Extension</div>
+            <p class="feature-desc">Tap "Link Clean" in any share sheet. Cleaned URL is instantly copied to clipboard &mdash; one tap, done.</p>
+          </div>
+          <div class="feature-card">
+            <span class="feature-icon">🤖</span>
+            <div class="feature-title">Android Intent Handler</div>
+            <p class="feature-desc">Share any text to Link Clean and the tracking-free URL lands in your clipboard automatically.</p>
+          </div>
+          <div class="feature-card">
+            <span class="feature-icon">⚡</span>
+            <div class="feature-title">ETag-Aware Rule Sync</div>
+            <p class="feature-desc">Rules update silently in the background. HTTP 304 means zero redundant downloads &mdash; your data plan is safe.</p>
+          </div>
+          <div class="feature-card">
+            <span class="feature-icon">🔗</span>
+            <div class="feature-title">250+ Domain Rules</div>
+            <p class="feature-desc">Amazon, YouTube, Twitter, Reddit, Instagram, eBay and many more &mdash; seeded from the ClearURLs community database.</p>
+          </div>
+          <div class="feature-card">
+            <span class="feature-icon">🎛️</span>
+            <div class="feature-title">Category Toggles</div>
+            <p class="feature-desc">Enable or disable UTM, click IDs, session tokens, referral codes, and fingerprinting params individually.</p>
+          </div>
+          <div class="feature-card">
+            <span class="feature-icon">🗳️</span>
+            <div class="feature-title">Community Voting</div>
+            <p class="feature-desc">Browse and vote on pending rule suggestions directly in the app. Contribute new rules with a single tap.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="privacy">
+      <div class="container">
+        <div class="section-label">Privacy</div>
+        <h2>Designed from first principles.</h2>
+        <p class="section-sub">
+          An app that removes trackers shouldn't be one. Every constraint below is enforced in code, not just promised in a policy.
+        </p>
+        <div class="pillar-list">
+          <div class="pillar">
+            <div class="pillar-dot"></div>
+            <div class="pillar-body">
+              <strong>No analytics SDK</strong>
+              <p>Zero telemetry libraries embedded in the app. Nothing phones home about how you use it.</p>
+            </div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-dot"></div>
+            <div class="pillar-body">
+              <strong>URLs never leave the device</strong>
+              <p>The entire cleaning pipeline runs in-process. URL content is never included in log entries or sent anywhere.</p>
+            </div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-dot"></div>
+            <div class="pillar-body">
+              <strong>Clipboard access is opt-in</strong>
+              <p>Auto-clean on open requires Privacy Mode to be explicitly enabled by you. The clipboard is never read silently.</p>
+            </div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-dot"></div>
+            <div class="pillar-body">
+              <strong>Background fetch = rules only</strong>
+              <p>Background network access is used exclusively to fetch the community ruleset &mdash; never for URL telemetry.</p>
+            </div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-dot"></div>
+            <div class="pillar-body">
+              <strong>iOS App Group isolation</strong>
+              <p>The shared container between the Share Extension and main app is accessible only to apps signed with the same Apple Team ID.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="community">
+      <div class="container">
+        <div class="section-label">Community</div>
+        <h2>Rules maintained by the community.</h2>
+        <p class="section-sub">
+          Found a tracker that Link Clean misses? Suggest a rule from inside the app. Community members vote; maintainers merge. No GitHub account required to suggest.
+        </p>
+        <div class="contrib-steps">
+          <div class="contrib-step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong>Spot a missed tracker</strong>
+              <p>Paste the dirty URL into the app and tap "Suggest a Rule" &mdash; the domain and parameter names are pre-filled.</p>
+            </div>
+          </div>
+          <div class="contrib-step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong>PII is redacted automatically</strong>
+              <p>Emails, session tokens, JWTs, and high-entropy strings are stripped from the suggestion before it leaves the device.</p>
+            </div>
+          </div>
+          <div class="contrib-step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong>Community votes</strong>
+              <p>Other users browse pending suggestions in the app and cast weighted votes. Link your GitHub identity to vote directly &mdash; no server required, it uses GitHub's OAuth Device Flow.</p>
+            </div>
+          </div>
+          <div class="contrib-step">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <strong>Maintainers merge</strong>
+              <p>When a suggestion crosses the vote threshold, a pull request is drafted automatically. After review it lands in the published ruleset and ships to all users on the next sync.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
